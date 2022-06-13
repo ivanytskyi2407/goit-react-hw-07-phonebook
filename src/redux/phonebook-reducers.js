@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { createReducer } from '@reduxjs/toolkit';
 import * as actions from './phoonebook-actions';
-console.log(actions.addContact.type);
+import { contactsAPI } from '../contactsAPI';
 
 const initialStateContacts = [
   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
