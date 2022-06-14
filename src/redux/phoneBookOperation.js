@@ -1,13 +1,19 @@
-import * as contactsFetchAction from './phoonebook-actions';
-// import { fetchContactsRequest ,fetchContactsSuccess,fetchContactsError} from './phoonebook-actions';
-import { contactsAPI } from '../contactsAPI';
+import { contactsAPI, createContact, deleteContact } from '../contactsAPI';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export const fetchContacts = () => async dispatch => {
-  dispatch(contactsFetchAction.fetchContactsRequest());
-  try {
-    const allContacts = await contactsAPI();
-    dispatch(contactsFetchAction.fetchContactsSuccess(allContacts));
-  } catch (error) {
-    dispatch(contactsFetchAction.fetchContactsError(error));
+export const fetchContacts = createAsyncThunk(
+  'contacts/fetchContacts',
+  async () => {
+    const response = await contactsAPI();
+    return response;
   }
-};
+);
+
+export const addContact = createAsyncThunk('contacts/add', async contact => {
+  const response = createContact(contact);
+  return response;
+});
+export const removeContact = createAsyncThunk('contacts/delete', async id => {
+  const response = deleteContact(id);
+  return response;
+});

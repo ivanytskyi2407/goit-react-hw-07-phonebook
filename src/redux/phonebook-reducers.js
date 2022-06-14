@@ -1,42 +1,34 @@
 import { combineReducers } from 'redux';
 import { createReducer } from '@reduxjs/toolkit';
-import {
-  addContact,
-  removeContact,
-  filterContacts,
-} from './phoonebook-actions';
-import {
-  fetchContactsRequest,
-  fetchContactsSuccess,
-  fetchContactsError,
-} from './phoonebook-actions';
+import { filterContacts } from './phoonebook-actions';
+import { fetchContacts, addContact, removeContact } from './phoneBookOperation';
 
-// const initialStateContacts = [
-//   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-//   { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-//   { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-//   { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-// ];
+console.log(addContact);
 
-// const items = createReducer(initialStateContacts, {
-//   [addContact]: (state, { payload }) => [...state, payload],
-//   [removeContact]: (state, { payload }) =>
-//     state.filter(({ id }) => id !== payload),
-// });
 const items = createReducer([], {
-  [fetchContactsSuccess]: (_, { payload }) => payload,
+  [fetchContacts.fulfilled]: (_, { payload }) => payload,
+  [addContact.fulfilled]: (state, { payload }) => [...state, ...payload],
+  [removeContact.fulfilled]: (state, { payload }) =>
+    state.filter(({ id }) => id !== payload),
 });
-const isLoading = createReducer(false, {
-  [fetchContactsRequest]: () => true,
-  [fetchContactsSuccess]: () => false,
-  [fetchContactsError]: () => false,
-});
+
+// const isLoading = createReducer(false, {
+//   [fetchContacts.pending]: () => true,
+//   [fetchContacts.fulfilled]: () => false,
+//   [fetchContacts.rejected]: () => false,
+// });
+// const error = createReducer(null, {
+//   [fetchContacts.rejected]: (_, { payload }) => payload,
+//   [fetchContacts.pending]: () => null,
+// });
+
 const filter = createReducer('', {
   [filterContacts]: (_, { payload }) => payload,
 });
 
 export default combineReducers({
   items,
-  isLoading,
+  // isLoading,
+  // error,
   filter,
 });

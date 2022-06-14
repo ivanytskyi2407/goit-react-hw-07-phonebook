@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import s from './Phonebook.module.css';
-import { addContact } from '../../redux/phoonebook-actions';
+import { addContact } from '../../redux/phoneBookOperation';
 
 const Phonebook = () => {
   const dispatch = useDispatch();
@@ -9,8 +9,7 @@ const Phonebook = () => {
   const [number, setNumber] = useState('');
 
   const handleChange = e => {
-    const name = e.target.name;
-    const value = e.target.value;
+    const { name, value } = e.target;
     switch (name) {
       case 'name':
         setName(value);
@@ -24,7 +23,7 @@ const Phonebook = () => {
   };
   const handleSubmit = e => {
     e.preventDefault();
-    dispatch(addContact(name, number));
+    dispatch(addContact({ name, number }));
     reset();
   };
   const reset = () => {
