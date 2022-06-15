@@ -1,10 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
 import s from './Filter.module.css';
-import { filterContacts } from '../../redux/phoonebook-actions';
-import { getFilter } from '../../redux/phonebookSelectors';
+import { filterContacts } from '../../redux/phonebookSlice';
 
 const Filter = () => {
-  const filter = useSelector(getFilter);
+  const { filter } = useSelector(state => state.contacts);
   const dispatch = useDispatch();
   return (
     <label className={s.label} htmlFor="">
