@@ -2,6 +2,7 @@ import Phonebook from './Phonebook/Phonebook';
 import Contacts from './Contacts/Contacts';
 import Filter from './Filter/Filter';
 import { useSelector } from 'react-redux';
+import { Loader } from './Loader/Loader';
 
 export const App = () => {
   const { status, error } = useSelector(state => state.contacts);
@@ -15,8 +16,8 @@ export const App = () => {
         flexDirection: 'column',
       }}
     >
-      {error && <h2>An error occerd:{error}</h2>}
-      {status === 'loading' && <h2>Loading...</h2>}
+      {error && alert(error)}
+      {status === 'loading' && <Loader />}
       <h2>Phonebook</h2>
       <Phonebook />
       <Filter />
