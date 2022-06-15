@@ -1,6 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchContacts, addContact, removeContact } from './phoneBookOperation';
 
+const setError = (state, { payload }) => {
+  state.status = 'rejected';
+  state.error = payload;
+};
+const setPending = state => {
+  state.status = 'loading';
+  state.error = null;
+};
+
 const phonebookSlice = createSlice({
   name: 'contacts',
   initialState: { entities: [], filter: '', status: null, error: null },
@@ -10,20 +19,10 @@ const phonebookSlice = createSlice({
     },
   },
   extraReducers: {
-    //   fetch
-    [fetchContacts.pending]: state => {
-      state.status = 'loading';
-      state.error = null;
-    },
     [fetchContacts.fulfilled]: (state, { payload }) => {
       state.status = 'resolved';
       state.entities = payload;
     },
-    [fetchContacts.rejected]: (state, { payload }) => {
-      state.status = 'rejected';
-      state.error = payload;
-    },
-    // remove
     [removeContact.fulfilled]: (state, { payload }) => {
       return {
         ...state,
@@ -33,15 +32,6 @@ const phonebookSlice = createSlice({
         }),
       };
     },
-    [removeContact.pending]: state => {
-      state.status = 'loading';
-      state.error = null;
-    },
-    [removeContact.rejected]: (state, { payload }) => {
-      state.status = 'rejected';
-      state.error = payload;
-    },
-    // add
     [addContact.fulfilled]: (state, { payload }) => {
       return {
         ...state,
@@ -49,14 +39,12 @@ const phonebookSlice = createSlice({
         entities: [...state.entities, payload],
       };
     },
-    [addContact.pending]: state => {
-      state.status = 'loading';
-      state.error = null;
-    },
-    [addContact.rejected]: (state, { payload }) => {
-      state.status = 'rejected';
-      state.error = payload;
-    },
+    [removeContact.pending]: setPending,
+    [fetchContacts.pending]: setPending,
+    [addContact.pending]: setPending,
+    [fetchContacts.rejected]: setError,
+    [removeContact.rejected]: setError,
+    [addContact.rejected]: setError,
   },
 });
 
